@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msatwo.user.mapper.UserMapper">
+  <select id="selectById" resultType="com.msatwo.user.model.UserVO">
+        SELECT * FROM emp_users WHERE id = #{id} LIMIT 1
+    </select>
+    <select id="selectUserList" resultType="com.msatwo.user.model.UserVO">
+        SELECT * FROM emp_users
+    </select>
+    <insert id="insertUser">
+        INSERT INTO emp_users(id, name) VALUES (#{id}, #{name})
+    </insert>
+    <update id="updateUser">
+        UPDATE emp_users SET name = #{name} WHERE id = #{id}
+    </update>
+     <delete id="deleteUser">
+        DELETE FROM emp_users WHERE id = #{id}
+    </delete>
+</mapper>

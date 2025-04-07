@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msathree.user.mapper.UserMapper">
+  <select id="selectById" resultType="com.msathree.user.model.UserVO">
+        SELECT * FROM cor_users WHERE id = #{id} LIMIT 1
+    </select>
+    <select id="selectUserList" resultType="com.msathree.user.model.UserVO">
+        SELECT * FROM cor_users
+    </select>
+    <insert id="insertUser">
+        INSERT INTO cor_users(id, name) VALUES (#{id}, #{name})
+    </insert>
+    <update id="updateUser">
+        UPDATE cor_users SET name = #{name} WHERE id = #{id}
+    </update>
+     <delete id="deleteUser">
+        DELETE FROM cor_users WHERE id = #{id}
+    </delete>
+</mapper>

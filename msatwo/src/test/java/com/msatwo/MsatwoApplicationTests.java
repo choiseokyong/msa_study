@@ -1,0 +1,13 @@
+package com.msatwo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MsatwoApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

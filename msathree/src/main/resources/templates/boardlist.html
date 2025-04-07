@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			table, tr, th, td {
+				border-collapse: collapse;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Hello World!</h2>
+		
+		<table>
+			<tr>
+				<th>이름</th>
+				<th>주소</th>
+			</tr>
+			<tr th:each="list: ${list}">
+				<td th:text="${list.name}"></td>
+				<td th:text="${list.addr}"></td>
+			</tr>
+		</table>		
+	</body>
+</html>
