@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.InstLctrSeqRegMapper">
+  
+    <insert id="insertInstLctrSeqReg" parameterType="com.onlineplatform.lctr.model.InstLctrSeqRprsVO">
+        INSERT INTO kit.INST_LCTR_SEQ_RPRS (
+    LCTR_SEQ, INST_EML_ADDR, SEQ, LCTR_OBJT, VDO_URL_ADDR, TEST_URL_ADDR, TEST_CRANS_URL_ADDR, SCR
+)
+VALUES (
+    #{lctrSeq},  
+    #{instEmlAddr},  
+    #{seq},  
+    #{lctrObjt},  
+    #{vdoUrlAddr},  
+    #{testUrlAddr},  
+    #{testCransUrlAddr},  
+    #{scr}
+);
+    </insert>
+    
+</mapper>

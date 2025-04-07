@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrAplyStatsSrchMapper">
+  
+    <select id="selectInstLctrSeqRprsList" parameterType="com.onlineplatform.lctr.model.InstLctrSeqRprsVO">
+        SELECT
+    LCTR_RPRS.LCTR_SEQ,           
+    LCTR_RPRS.LCTR_TTL,           
+    LCTR_RPRS.INSTR_NM,           
+    LCTR_RPRS.LCTR_CN,            
+    LCTR_RPRS.LCTR_KND,           
+    LCTR_RPRS.REG_YMD,            
+    LCTR_SEQ.PRGRS_RT,            
+    LCTR_SEQ.VDO_URL_ADDR,        
+    LCTR_SEQ.SEQ,                 
+    LCTR_SEQ.LCTR_OBJT,           
+    MBR.USER AS GENERAL_USER      
+FROM
+    kit.LCTR_RPRS
+JOIN kit.LCTR_SEQ
+    ON LCTR_RPRS.LCTR_SEQ = LCTR_SEQ.LCTR_SEQ
+JOIN kit.MBR
+    ON LCTR_SEQ.EML_ADDR = MBR.EML_ADDR
+WHERE
+    LCTR_SEQ.EML_ADDR = #{emlAddr}        
+        
+    </select>
+    
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.MbrJoinMapper">
+
+    <insert id="insertMbr" parameterType="com.onlineplatform.lctr.model.MbrVO">
+        INSERT INTO kit.MBR(EML_ADDR, USER, PSWD,
+       TELNO, BRTH_YMD, MBR_NO,ADDR,JOIN_YMD,REG_ID
+       ) value(#{emlAddr},#{user},#{pswd},#{telno},'1970-02-10',
+       ${mbrNo},#{addr},now(),#{user})
+    </insert>
+    
+</mapper>

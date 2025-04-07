@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrRegMapper">
+  
+    <insert id="insertLctrReg" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+        INSERT INTO kit.LCTR_RPRS(LCTR_SEQ,LCTR_OBJT,LCTR_TTL,INSTR_NM,LCTR_CN,LCTR_KND,REG_YMD,MBR_KND) 
+        values (UNIX_TIMESTAMP(),#{lctrObjt},#{lctrTtl},#{instrNm},#{lctrCn},#{lctrKnd},
+       CURRENT_DATE,#{mbrKnd})
+    </insert>
+    
+</mapper>

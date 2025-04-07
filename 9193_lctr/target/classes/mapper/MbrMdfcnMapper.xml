@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.MbrMdfcnMapper">
+    <select id="getMbrInfo" parameterType="com.onlineplatform.lctr.model.MbrVO">
+    	select * from kit.MBR
+    	where EML_ADDR = #{emlAddr}             
+    </select>
+
+    <update id="updateMbrInfo" parameterType="com.onlineplatform.lctr.model.MbrVO">
+       UPDATE kit.MBR
+       	SET pswd = #{pswd}, user = #{user}, telno = #{telno},
+       	    mbr_no = ${mbrNo},
+       		addr = #{addr}, MDFCN_YMD_DATE =CURDATE(),  
+       		mdfcn_id = #{user}
+        WHERE EML_ADDR = #{emlAddr};
+    </update>   
+</mapper>

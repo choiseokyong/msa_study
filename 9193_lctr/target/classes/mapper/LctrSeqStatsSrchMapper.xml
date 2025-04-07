@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrSeqStatsSrchMapper">
+    <!-- 강의 목록을 조회하는 SQL -->
+    <select id="getLectureList" resultType="com.onlineplatform.lctr.model.LctrRprsVO">
+        SELECT 
+            LCTR_SEQ, 
+            LCTR_OBJT, 
+            LCTR_TTL, 
+            INSTR_NM, 
+            LCTR_CN, 
+            LCTR_KND, 
+            REG_YMD, 
+            MDFCN_YMD, 
+            MBR_KND, 
+            REG_ID, 
+            MDFCN_ID
+            LCTR_DURA
+        FROM kit.LCTR_RPRS
+    </select>
+</mapper>
