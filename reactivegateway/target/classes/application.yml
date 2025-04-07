@@ -1,0 +1,65 @@
+server:
+  port: 80
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        - id : msaone
+          uri : http://3.35.223.88:32001
+          predicates:
+            - Path=/msaone/**
+          filters:
+            - RewritePath=/msaone/(?<segment>.*), /$\{segment}
+        - id : msatwo
+          uri : http://3.35.223.88:32002
+          predicates:
+            - Path=/msatwo/**
+          filters:
+            - RewritePath=/msatwo/(?<segment>.*), /$\{segment}
+        - id : msathree
+          uri : http://3.35.223.88:32003
+          predicates:
+            - Path=/msathree/**
+          filters:
+            - RewritePath=/msathree/(?<segment>.*), /$\{segment}
+        - id : msafour
+          uri : http://3.35.223.88:32004
+          predicates:
+            - Path=/msafour/**
+          filters:
+            - RewritePath=/msafour/(?<segment>.*), /$\{segment}
+        - id : msafive
+          uri : http://3.35.223.88:32005
+          predicates:
+            - Path=/msafive/**
+          filters:
+            - RewritePath=/msafive/(?<segment>.*), /$\{segment}
+
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+           allowedOrigins:
+            - "http://3.35.223.88:32000"
+           allow-credentials: true   
+           allowedHeaders:
+            - x-requested-with
+            - authorization
+            - content-type
+            - credential
+            - X-AUTH-TOKEN
+            - X-CSRF-TOKEN
+           allowedMethods:
+            - POST
+            - GET
+            - PUT
+            - PATCH
+            - OPTIONS
+            - DELETE
