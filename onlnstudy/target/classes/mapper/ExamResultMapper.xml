@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.exam.mapper.ExamResultMapper">
+    
+    <!-- 시험을 봤는지 안봤는지 조회 -->
+    <select id="getChkExam" parameterType="map" resultType="com.onlineplatform.exam.model.ExamResultVO">
+    	SELECT * FROM TEST_RSLT WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND EML_ADDR = #{emlAddr}
+    </select>
+    
+    <!-- /특정 시험 정답 조회 -->
+    <select id="getCorrectAnswers" parameterType="map" resultType="com.onlineplatform.exam.model.ExamVO">
+        SELECT CRANS FROM TEST WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND INST_EML_ADDR = #{instEmlAddr}
+    </select>
+    
+    <!-- /UserTest 시험 결과 정보 삽입 --> 
+    <insert id="insertTestResult" parameterType="com.onlineplatform.exam.model.ExamResultVO">
+        INSERT INTO TEST_RSLT (LCTR_SEQ, INST_EML_ADDR, EML_ADDR, SEQ, ANS_CN, YN, SCORE)
+        VALUES (#{lctrSeq}, #{instEmlAddr}, #{emlAddr}, #{seq}, #{ansCn}, #{yn}, #{score})
+    </insert>
+
+    <!-- /UserTestAns 특정 시험 결과 조회 -->
+    <select id="selectTestResultById" parameterType="int" resultType="com.onlineplatform.exam.model.ExamResultVO">
+        SELECT * FROM TEST_RSLT WHERE TEST_RSLT_NO = #{testRslNo} AND EML_ADDR = #{emlAddr}
+    </select>
+
+    <!-- /UserTestSrvyReg 특정 시험 결과 조회 (이메일로) -->
+    <select id="selectTestResultsByEmail" parameterType="map" resultType="com.onlineplatform.exam.model.ExamResultVO">
+        SELECT * FROM TEST_RSLT WHERE EML_ADDR = #{emlAddr} AND LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq}
+    </select>
+
+    <!-- /InstTestRsltList 강좌와 기관 이메일로 시험 결과 조회 -->
+    <select id="InstTestRsltList" parameterType="map" resultType="com.onlineplatform.exam.model.ExamResultVO">
+        SELECT TR.*, M.USER
+		FROM TEST_RSLT AS TR
+		JOIN MBR AS M ON TR.EML_ADDR = M.EML_ADDR
+		WHERE TR.LCTR_SEQ = #{lctrSeq} 
+		  AND TR.SEQ = #{seq} 
+		  AND TR.INST_EML_ADDR = #{instEmlAddr}
+    </select>
+
+    <!-- 시험 결과 전체 조회 -->
+    <select id="selectAllTestResults" resultType="com.onlineplatform.exam.model.ExamResultVO">
+        SELECT * FROM TEST_RSLT
+    </select>
+    
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.srvy.mapper.SrvyResultMapper">
+
+	<!-- /SrvyReg 설문 문항 정보 삽입-->
+    <insert id="insertSurveyResult" parameterType="com.onlineplatform.srvy.model.SrvyResultVO">
+        INSERT INTO SRVY_RSLT (LCTR_SEQ, USER_EML, CHC_RSLT, SEQ, REG_DATE, SURVEY_NO)
+        VALUES (#{lctrSeq}, #{userEmlAddr}, #{chcRslt}, #{seq}, #{regDate}, #{srvyNo})
+    </insert>
+    
+    <!-- 해당 기관의 등록된 설문지의 결과를 조회 -->
+    <select id="selectSurveyResults" parameterType="map" resultType="map">
+	    WITH ResponseStats AS (
+	        SELECT 
+	            r.SURVEY_NO,
+	            r.LCTR_SEQ,
+	            r.SEQ,
+	            r.CHC_RSLT,
+	            COUNT(*) AS count
+	        FROM SRVY_RSLT r
+	        WHERE r.LCTR_SEQ = #{lctrSeq} AND r.SEQ = #{seq}
+	        GROUP BY r.SURVEY_NO, r.LCTR_SEQ, r.SEQ, r.CHC_RSLT
+	    ),
+	    TotalResponses AS (
+	        SELECT 
+	            SURVEY_NO,
+	            LCTR_SEQ,
+	            SEQ,
+	            SUM(count) AS totalCount
+	        FROM ResponseStats
+	        GROUP BY SURVEY_NO, LCTR_SEQ, SEQ
+	    )
+	    SELECT 
+	        s.SURVEY_NO,
+	        s.LCTR_SEQ,
+	        s.SEQ,
+	        s.SRVY_TYPE,
+	        s.SRVY_CN,
+	        s.CHC,
+	        r.CHC_RSLT,
+	        r.count AS count,
+	        t.totalCount AS totalCount,
+	        ROUND((r.count * 100.0) / NULLIF(t.totalCount, 0), 2) AS percentage
+	    FROM ResponseStats r
+	    JOIN TotalResponses t 
+	        ON r.SURVEY_NO = t.SURVEY_NO 
+	        AND r.LCTR_SEQ = t.LCTR_SEQ 
+	        AND r.SEQ = t.SEQ
+	    JOIN SRVY s 
+	        ON r.SURVEY_NO = s.SURVEY_NO 
+	        AND r.LCTR_SEQ = s.LCTR_SEQ 
+	        AND r.SEQ = s.SEQ
+	    WHERE s.LCTR_SEQ = #{lctrSeq} AND s.SEQ = #{seq}
+	    ORDER BY s.SURVEY_NO, s.LCTR_SEQ, s.SEQ, r.count DESC;
+	</select>
+
+
+</mapper>

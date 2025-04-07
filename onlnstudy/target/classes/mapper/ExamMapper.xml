@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.exam.mapper.ExamMapper">
+
+    <!-- 시험 정보 삭제 -->
+    <delete id="deleteTestByLctrSeqAndInst" parameterType="com.onlineplatform.exam.model.ExamVO">
+        DELETE FROM TEST 
+        WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND INST_EML_ADDR = #{instEmlAddr}
+    </delete>
+
+    <!-- 시험 정보 삽입 -->
+	<insert id="insertTest" parameterType="com.onlineplatform.exam.model.ExamVO">
+        INSERT INTO TEST (LCTR_SEQ, INST_EML_ADDR, QITEM_TYPE, QITEM_CN, CHC, CRANS, REG_YMD, file_path, SEQ)
+        VALUES (#{lctrSeq}, #{instEmlAddr}, #{qitemType}, #{qitemCn}, #{cHc}, #{crAns}, #{regDate}, #{filePath}, #{seq})
+    </insert>
+
+
+    <!-- 시험 정보 조회 -->
+    <!--
+    <select id="selectBylctrNoAnduserEmail" parameterType="com.onlineplatform.exam.model.ExamVO" resultType="com.onlineplatform.exam.model.ExamVO">
+        SELECT * FROM TEST WHERE LCTR_SEQ = #{lctrNo} AND INST_EML_ADDR = #{instEmlAddr}
+    </select>
+	-->
+	
+	<select id="selectBylctrNoAnduserEmail" parameterType="map" resultType="com.onlineplatform.exam.model.ExamVO">
+	    SELECT lctr_seq, inst_eml_addr, qitem_type, qitem_cn, chc 
+	    FROM TEST 
+	    WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND INST_EML_ADDR = #{instEmlAddr}
+	</select>
+
+	
+	
+    <!-- 기관이 올린 시험들 조회 -->
+    <select id="selectAllTests" resultType="com.onlineplatform.exam.model.ExamVO">
+        SELECT * FROM TEST WHERE INST_EML_ADDR = #{instEmlAddr} GROUP BY SEQ
+    </select>
+    
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.srvy.mapper.SrvyMapper">
+
+	<!-- /SrvyReg 설문 문항 정보 삽입-->
+    <insert id="insertSurvey" parameterType="com.onlineplatform.srvy.model.SrvyVO">
+        INSERT INTO SRVY (INST_EML_ADDR ,LCTR_SEQ, SEQ, SRVY_TYPE, SRVY_CN, CHC)
+        VALUES (#{instEmlAddr}, #{lctrSeq}, #{seq}, #{srvyType}, #{srvyCn}, #{cHc})
+    </insert>
+    
+    <select id="selectBylctrNoAndSeq" parameterType="map" resultType="com.onlineplatform.srvy.model.SrvyVO">
+	    SELECT * FROM 
+	    	SRVY 
+	    WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND INST_EML_ADDR = #{instEmlAddr}
+	</select>
+	
+	<delete id="deleteSrvy" parameterType="com.onlineplatform.srvy.model.SrvyVO">
+        DELETE FROM SRVY 
+        WHERE LCTR_SEQ = #{lctrSeq} AND SEQ = #{seq} AND INST_EML_ADDR = #{instEmlAddr}
+    </delete>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.mapper.AttendanceMapper">
+
+    <!-- 출결 정보 삽입 --> <!-- 동영상 시청 페이지 내에 출석완료 버튼 有 -->
+    <insert id="insertAttendance" parameterType="com.onlineplatform.model.AttendanceVO">
+        INSERT INTO ATND (SEQ, INST_EML_ADDR, LCTR_SEQ, LCTR_OBJT, EML_ADDR, ATND_YMD, CNTN_IP)
+        VALUES (#{seq}, #{instEmlAddr}, #{lctrSeq}, #{lctrObjt}, #{emlAddr}, #{atndYmd}, #{cntnIp})
+    </insert>
+
+    <!-- /userAtndRslt  출결 정보 조회 (일반강의) -->
+    <select id="selectAttendanceByEmailAndSeq" resultType="com.onlineplatform.model.AttendanceVO">
+        SELECT * FROM ATND 
+        WHERE EML_ADDR = #{emlAddr} AND SEQ = #{seq}
+    </select>
+
+	<!-- /userAtndRslt  출결 정보 조회 (일반강의) -->
+    <select id="responseAttendanceByEmailAndSeq" resultType="com.onlineplatform.model.UserAtndRsltResponseDTO">
+        SELECT DISTINCT lr.LCTR_TTL, m.USER, lr.LCTR_OBJT, a.ATND_YMD 
+	FROM kit.LCTR_RPRS lr
+	LEFT JOIN kit.ATND a ON a.LCTR_SEQ = lr.LCTR_SEQ AND a.EML_ADDR = #{emlAddr}
+	JOIN kit.MBR m ON m.EML_ADDR = #{emlAddr}
+	JOIN kit.LCTR_SEQ ls ON ls.LCTR_SEQ = lr.LCTR_SEQ AND ls.LCTR_OBJT = lr.LCTR_OBJT 
+	WHERE ls.SEQ = #{seq}
+	GROUP BY lr.LCTR_OBJT;
+    </select>
+
+	<select id="responseInstAttendanceByEmailAndSeq" resultType="com.onlineplatform.model.UserAtndRsltResponseDTO">
+    select DISTINCT lr.LCTR_TTL, m.USER, lr.LCTR_OBJT, a.ATND_YMD
+	FROM kit.LCTR_RPRS lr
+	LEFT JOIN kit.ATND a ON a.LCTR_SEQ = lr.LCTR_SEQ AND a.EML_ADDR = #{emlAddr}
+	JOIN kit.MBR m ON m.EML_ADDR = #{emlAddr}
+	JOIN kit.INST_LCTR_SEQ ils ON ils.LCTR_SEQ = lr.LCTR_SEQ AND ils.LCTR_OBJT = lr.LCTR_OBJT
+	WHERE ils.SEQ = #{seq}
+	GROUP BY lr.LCTR_OBJT;
+    </select>
+
+    <!-- /atndRslt 강좌별 출결 정보 조회-->
+    <select id="selectAttendancesBySeq" resultType="com.onlineplatform.model.AtndRsltResponseDTO">
+    SELECT lr.LCTR_TTL ,im.INST_NM, ils.EML_ADDR, m.`USER`, ils.LCTR_OBJT ,a.ATND_YMD
+	FROM kit.INST_LCTR_SEQ ils
+	LEFT JOIN kit.ATND a ON a.SEQ = ils.SEQ AND a.EML_ADDR = ils.EML_ADDR AND a.LCTR_OBJT = ils.LCTR_OBJT
+	JOIN kit.MBR m ON ils.EML_ADDR = m.EML_ADDR
+	JOIN kit.INST_MBR im ON im.INST_EML_ADDR = ils.INST_EML_ADDR
+	JOIN kit.LCTR_RPRS lr ON lr.LCTR_SEQ = ils.LCTR_SEQ AND lr.LCTR_OBJT = ils.LCTR_OBJT 
+	WHERE ils.SEQ = #{seq}
+	ORDER BY ils.EML_ADDR , ils.LCTR_OBJT;
+    </select>
+
+	
+
+	<!--<select id="selectAttendancesBySeqWithPaging" resultType="com.onlineplatform.model.AtndRsltResponseDTO">
+    SELECT lr.LCTR_TTL ,im.INST_NM, ils.EML_ADDR, m.`USER`, ils.LCTR_OBJT ,a.ATND_YMD
+	FROM kit.INST_LCTR_SEQ ils
+	LEFT JOIN kit.ATND a ON a.SEQ = ils.SEQ AND a.EML_ADDR = ils.EML_ADDR AND a.LCTR_OBJT = ils.LCTR_OBJT
+	JOIN kit.MBR m ON ils.EML_ADDR = m.EML_ADDR
+	JOIN kit.INST_MBR im ON im.INST_EML_ADDR = ils.INST_EML_ADDR
+	JOIN kit.LCTR_RPRS lr ON lr.LCTR_SEQ = ils.LCTR_SEQ AND lr.LCTR_OBJT = ils.LCTR_OBJT 
+	WHERE ils.SEQ = #{seq}
+	ORDER BY ils.EML_ADDR , ils.LCTR_OBJT
+	LIMIT #{usersPerPage}*#{countLctrObjt} OFFSET (#{page}-1)*#{usersPerPage}*#{countLctrObjt};
+    </select>-->
+	
+
+</mapper>
