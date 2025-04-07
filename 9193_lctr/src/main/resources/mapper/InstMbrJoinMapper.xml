@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.InstMbrJoinMapper">
+  
+    <insert id="insertInstMbr" parameterType="com.onlineplatform.lctr.model.InstMbrVO">
+        INSERT INTO INST_MBR(INST_EML_ADDR, USER, PSWD,
+       TELNO, BRTH_YMD, MBR_NO, INST_NM, CTRTR_TELNO, ADDR,JOIN_YMD 
+       ) values (#{instEmlAddr},#{user},#{pswd},#{telno},#{brthYmd},
+       ${mbrNo},#{instNm},#{ctrtrTelno},#{addr},#{joinYmd})
+    </insert>
+    
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrDtlStatsMapper">
+  
+    <!--<select id="selectInstLctrSeqRprsList" parameterType="com.onlineplatform.lctr.model.InstLctrSeqRprsVO">
+        SELECT * FROM (
+        SELECT
+            LCTR_RPRS.LCTR_SEQ,           
+            LCTR_RPRS.LCTR_TTL,           
+            LCTR_RPRS.INSTR_NM,           
+            LCTR_RPRS.LCTR_CN,            
+            LCTR_RPRS.LCTR_KND,          
+            LCTR_RPRS.REG_YMD,            
+            INST_LCTR_SEQ_RPRS.VDO_URL_ADDR, 
+            INST_LCTR_SEQ_RPRS.TEST_URL_ADDR, 
+            INST_LCTR_SEQ_RPRS.SCR,        
+            MBR.`USER` AS USER_TYPE,
+            CAST(NULL AS CHAR) AS INSTITUTION_USER         
+            NULL AS INSTITUTION_USER       
+        FROM kit.LCTR_RPRS
+        LEFT JOIN kit.INST_LCTR_SEQ_RPRS
+            ON LCTR_RPRS.LCTR_SEQ = INST_LCTR_SEQ_RPRS.LCTR_SEQ
+        LEFT JOIN kit.MBR
+            ON INST_LCTR_SEQ_RPRS.EML_ADDR = MBR.EML_ADDR
+        WHERE LCTR_RPRS.LCTR_SEQ = ? ${lctrSeq}
+
+        UNION ALL
+
+        SELECT
+            LCTR_RPRS.LCTR_SEQ,
+            LCTR_RPRS.LCTR_TTL,
+            LCTR_RPRS.INSTR_NM,
+            LCTR_RPRS.LCTR_CN,
+            LCTR_RPRS.LCTR_KND,
+            LCTR_RPRS.REG_YMD,
+            INST_LCTR_SEQ_RPRS.VDO_URL_ADDR,
+            INST_LCTR_SEQ_RPRS.TEST_URL_ADDR,
+            INST_LCTR_SEQ_RPRS.SCR,
+            CAST(NULL AS CHAR) AS USER_TYPE,
+            NULL AS USER_TYPE,          
+            INST_MBR.`USER` AS INSTITUTION_USER     
+        FROM kit.LCTR_RPRS
+        LEFT JOIN kit.INST_LCTR_SEQ_RPRS
+            ON LCTR_RPRS.LCTR_SEQ = INST_LCTR_SEQ_RPRS.LCTR_SEQ
+        LEFT JOIN kit.INST_MBR
+            ON INST_LCTR_SEQ_RPRS.INST_EML_ADDR = INST_MBR.INST_EML_ADDR
+        WHERE LCTR_RPRS.LCTR_SEQ =? ${lctrSeq}
+        ) AS combined_results
+    </select>-->
+    
+    <select id="selectLctrRprsVOList" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+    	select * from LCTR_RPRS
+    </select>
+    	
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlineplatform.lctr.mapper.PrgrsLctrSeqMapper">
+    <!-- 회원 이메일을 파라미터로 받아 해당 회원의 강의 진도 데이터를 조회 -->
+    <select id="getPrgrsLctrSeqList" resultType="com.onlineplatform.lctr.model.LctrSeqVO">
+        SELECT 
+            LCTR_SEQ,
+            EML_ADDR,
+            SEQ,
+            LCTR_OBJT,
+            PRGRS_RT,
+            VDO_URL_ADDR,
+            REG_YMD,
+            MDFCN_YMD,
+            REG_ID,
+            MDFCN_ID
+        FROM kit.LCTR_SEQ
+        WHERE EML_ADDR = #{emlAddr}
+        ORDER BY LCTR_SEQ, LCTR_OBJT
+    </select>
+</mapper>

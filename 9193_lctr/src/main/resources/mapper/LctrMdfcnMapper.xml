@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrMdfcnMapper">
+  
+    <update id="lctrMdfcn" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+        update kit.LCTR_RPRS set LCTR_TTL=#{lctrTtl},INSTR_NM=#{instrNm},LCTR_CN=#{lctrCn},
+        LCTR_KND=#{lctrKnd},REG_YMD=#{regYmd} ,MDFCN_YMD=CURRENT_DATE,MBR_KND=#{mbrKnd} where LCTR_SEQ=#{lctrSeq}
+    </update>
+    
+    <delete id="deleteLctr" parameterType="String">
+    	DELETE FROM kit.LCTR_RPRS WHERE LCTR_SEQ = ${lctrSeq}
+	</delete>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.lctr.mapper.LctrStatsSrchMapper">
+  
+    <select id="selectLctrRprsList" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+        select * from LCTR_RPRS
+    </select>
+    
+    <select id="findByLctrSeq" parameterType="String" resultType="com.onlineplatform.lctr.model.LctrRprsVO">
+        SELECT * FROM LCTR_RPRS WHERE lctr_seq = #{lctrSeq}
+    </select>
+    
+    <select id="AdminSelectLctrRprsList" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+        select * from LCTR_RPRS WHERE mbr_knd = 3
+    </select>
+    <select id="GeneralSelectLctrRprsList" parameterType="com.onlineplatform.lctr.model.LctrRprsVO">
+        select * from LCTR_RPRS WHERE mbr_knd = 2
+    </select>
+</mapper>

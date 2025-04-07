@@ -1,0 +1,23 @@
+<body> <!--저장연습-->
+	<div>
+		<h1>리스트 저장</h1>
+		<button onclick="fn_getlist()">저장하기</button>
+		<div id="save"></div>
+	</div>
+</body>
+<script>
+	function fn_getsave(){
+		$.ajax({
+			type:"GET",
+			url:"http://local:9090/save", 
+			dataType:"text"
+		})
+		.done(function (result){
+			console.log(result);
+			$("#save").replaceWith(result);
+		})
+		.fail(function(jquXHR){
+			console.log(jquXHR);
+		})
+	}
+</script>
