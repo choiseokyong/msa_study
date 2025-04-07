@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.common.mapper.NtcMapper">
+	<select id="selectByNo" resultType="com.onlineplatform.common.model.NtcVO">
+		SELECT * FROM NTC WHERE no = #{no} LIMIT 1
+	</select>
+	<sql id="searchNtc">
+	  AND
+	  <choose>
+	    <when test="searchKey == 'title'">
+	      NTC.title LIKE CONCAT('%', #{keyword}, '%')
+	    </when>
+	    <when test="searchKey == 'user'">
+	      MBR.user LIKE CONCAT('%', #{keyword}, '%')
+	    </when>
+	    <when test="searchKey == ''">
+	      NTC.title LIKE CONCAT('%', #{keyword}, '%')
+	      OR 
+	      MBR.user LIKE CONCAT('%', #{keyword}, '%')
+	    </when>
+	    <!-- 추가적으로 필요한 컬럼을 더 추가 -->
+	    <otherwise>
+	      1 = 0 <!-- 검색 키워드가 유효하지 않은 경우 결과를 반환하지 않음 -->
+	    </otherwise>
+	  </choose>
+	</sql>
+	<resultMap type="com.onlineplatform.common.model.NtcVO" id="ntcAddMbrUser">
+		<result property="mbrVo.user" column="user" />
+	</resultMap>
+	<select id="selectNtcList" resultMap="ntcAddMbrUser">
+		<![CDATA[
+			SELECT NTC.no, NTC.title, NTC.reg_dt, NTC.ntc_yn, NTC.reg_id, MBR.user FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+		]]>
+			<include refid='searchNtc' />
+		<![CDATA[
+			ORDER BY 
+			    CASE 
+			        WHEN NTC.ntc_yn = 'Y' THEN 0 
+			        ELSE 1 
+			    END,
+			    NTC.reg_dt DESC 
+			LIMIT #{start}, #{scale}
+		]]>
+	</select>
+	<!--<select id="selectNtcList" resultType="com.onlineplatform.common.model.NtcVO">
+		<![CDATA[
+			SELECT NTC.no, NTC.title, NTC.reg_dt, NTC.ntc_yn, NTC.reg_id, MBR.user FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+			ORDER BY 
+			    CASE 
+			        WHEN NTC.ntc_yn = 'Y' THEN 0 
+			        ELSE 1 
+			    END,
+			    NTC.reg_dt DESC 
+			LIMIT #{start}, #{scale}
+		]]>
+	</select>-->
+	<select id="selectNtcListToMain" resultMap="ntcAddMbrUser">
+		<![CDATA[
+			SELECT NTC.no, NTC.title, NTC.reg_dt, NTC.ntc_yn, NTC.reg_id, MBR.user FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+			ORDER BY 
+			    CASE 
+			        WHEN NTC.ntc_yn = 'Y' THEN 0 
+			        ELSE 1 
+			    END,
+			    NTC.reg_dt DESC 
+			LIMIT 0, 3
+		]]>
+	</select>
+	<select id="selectAllNtcList" resultType="com.onlineplatform.common.model.NtcVO">
+		<![CDATA[
+			SELECT NTC.*, MBR.user FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+		]]>
+			<include refid='searchNtc' />
+		<![CDATA[
+			ORDER BY 
+			    CASE 
+			        WHEN NTC.ntc_yn = 'Y' THEN 0 
+			        ELSE 1 
+			    END,
+			    NTC.reg_dt DESC
+		]]>
+	</select>
+	<select id="getNtcTotal">
+		<![CDATA[
+			SELECT COUNT(*) FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+		]]>
+			<include refid='searchNtc' />
+	</select>
+	<!--<select id="selectAllNtcList" resultType="com.onlineplatform.common.model.NtcVO">
+		<![CDATA[
+			SELECT NTC.title, NTC.reg_dt, MBR.user FROM NTC
+			INNER JOIN MBR on NTC.reg_id = MBR.eml_addr
+			WHERE NTC.use_yn = 'Y' 
+			ORDER BY 
+			    CASE 
+			        WHEN NTC.ntc_yn = 'Y' THEN 0 
+			        ELSE 1 
+			    END,
+			    NTC.reg_dt DESC
+		]]>
+	</select>-->
+	<insert id="insertNtc">
+		INSERT INTO NTC (reg_id, upt_id, ntc_yn, title, content, reg_dt, upt_dt, use_yn)
+		VALUES (#{regId}, #{uptId}, #{ntcYn}, #{title}, #{content}, now(), now(), #{useYn})
+	</insert>
+	<delete id="deleteNtc">
+		DELETE FROM NTC WHERE no = #{no}
+	</delete>
+	
+	<update id="updateNtc">
+		UPDATE NTC SET upt_id = #{uptId}, ntc_yn = #{ntcYn}, title = #{title}, content = #{content}, upt_dt = now(), use_yn = #{useYn} 
+		WHERE no = #{no}
+	</update>
+</mapper>

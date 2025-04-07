@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onlineplatform.common.mapper.MbrMapper">
+	<select id="selectMbrList" resultType="com.onlineplatform.common.model.MbrVO">
+		<![CDATA[ 
+			SELECT * FROM MBR
+		]]>
+	</select>
+	<select id="selectMbrByLgn" resultType="com.onlineplatform.common.model.MbrVO">
+		<![CDATA[ 
+			SELECT * FROM MBR WHERE eml_addr = #{emlAddr} AND pswd = #{pswd} AND mbr_no = #{mbrNo}
+		]]>
+	</select>
+	<select id="selectInstMbrByLgn" resultType="com.onlineplatform.common.model.InstMbrVO">
+		<![CDATA[ 
+			SELECT * FROM INST_MBR WHERE INST_EML_ADDR = #{emlAddr} AND PSWD = #{pswd} AND MBR_NO = #{mbrNo}
+		]]>
+	</select>
+</mapper>

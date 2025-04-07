@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Regist</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</head>
+	<script>
+		function saveList() {
+			document.board.action = "/user/save";
+			document.board.submit();
+		}
+	</script>
+	<body>
+		<h3 align="center">신규 사용자 등록</h3>
+		<form action="/user/save" method="get" name="board" align="center">
+			<label>사용자 ID : </label>
+			<input type="text" id="id" name="id" value="" th:value="test"><br>
+			<label>사용자 이름 : </label>
+			<input type="text" id="name" name="name" value="" th:value="test"><br>
+			<input type="submit" value="등록">
+			<!--<input type="button" value="등록" onclick="saveList()">-->			
+		</form>
+	</body>
+</html>
