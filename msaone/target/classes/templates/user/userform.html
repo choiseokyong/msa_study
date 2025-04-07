@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="회원가입"></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link id="gwurl" th:data-contextPath="${@environment.getProperty('reactivegateway.url')}" />
+</head>
+<body>
+    <th:block layout:fragment="content">
+		<h2>회원 가입</h2>
+		<div>
+			<form>
+				<div>
+					<div>아이디</div>
+					<input type="text" id="id" name="id">
+				</div>
+				<div>
+					<div>이름</div>
+					<input type="text" id="name" name="name">
+				</div>
+				<input type="submit" class="btn-submit" value="회원가입">
+				<button type="button" onclick="fn_getform()">getForm</button>
+			</form>
+		</div>
+		
+		<div id="getform"></div>
+	</th:block>
+	
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			const GW_URL = document.querySelector("#gwurl").getAttribute("data-contextPath");
+			
+			$(function() {
+				$(".btn-submit").click((e) => {
+					const id = $("#id").val();
+					const name = $("#name").val();
+					
+					if(id == "") {
+						alert("아이디를 입력해주세요.");
+						e.preventDefault();
+					}
+					
+					if(name == "") {
+						alert("이름을 입력해주세요.");
+						e.preventDefault();
+					}
+					
+					const path = "http://" + GW_URL + "/api/signup";
+					const json = JSON.stringify({
+						"id" : id,
+						"name" : name
+					});
+					
+					$.ajax({
+						url: path,
+						type: "POST",
+						contentType: "application/json",
+						data: json
+					}).done(function (result) {
+						alert("회원가입 성공");
+						console.log();
+						location.href = "http://" + GW_URL + "/userlist";
+					}); 
+				});
+			});
+			
+			function fn_getform() {
+				const id = $("#id").val();
+				
+				if(id == "") {
+					alert("아이디를 입력해주세요.");
+					e.preventDefault();
+				}
+				
+				const path = "http://" + GW_URL + "/api/getform";
+				const json = JSON.stringify({
+					"id" : id
+				});
+				
+				$.ajax({
+					url: path,
+					type: "POST",
+					contentType: "application/json",
+					data: json
+				}).done(function (result) {
+					console.log(result);
+					var str = "";
+					str += "<table>";
+					str += "<tr>";
+					str += "<td>" + result.id + "</td>";
+					str += "<td>" + result.name + "</td>";
+					str += "</tr>";
+					str += "</table>";
+					
+					$("#getform").html(str);
+				}); 
+			}
+		</script>
+	</th:block>
+</body>
+</html>

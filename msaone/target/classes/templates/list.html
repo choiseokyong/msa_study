@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<table border="1" align="center">
+			<tr>
+				<th>사용자 번호</th>
+				<th>사용자 이름</th>
+			</tr>
+			<tr th:each="list: ${list}">
+				<td th:text="${list.id}"></td>
+				<td th:text="${list.name}"></td>
+			</tr>
+		</table>
+	</body>
+</html>

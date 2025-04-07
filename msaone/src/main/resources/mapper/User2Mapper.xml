@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msaone.user.mapper.User2Mapper">
+	<select id="selectById" resultType="com.msaone.user.model.UserVO">
+		SELECT * FROM users WHERE id = #{id} LIMIT 1
+	</select>
+	
+	<select id="selectUserList" resultType="com.msaone.user.model.UserVO">
+		SELECT * FROM users
+	</select>
+	<insert id="insertUser">
+		INSERT INTO users (id, name) VALUES (#{id}, #{name})
+	</insert>
+	<delete id="deleteUser">
+		DELETE FROM users WHERE id = #{id}
+	</delete>
+	
+	<update id="updateUser">
+		UPDATE users SET name = #{name} WHERE id = #{id}
+	</update>
+</mapper>

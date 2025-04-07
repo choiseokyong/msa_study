@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="리스트"></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link id="gwurl" th:data-contextPath="${@environment.getProperty('reactivegateway.url')}" />
+</head>
+<body>
+	<div>
+		<h1>리스트 호출</h1>
+		<button onclick="fn_getlist()">호출하기</button>
+		<div id="list"></div>
+	</div>
+	<div>
+		<div>아이디</div>
+		<input type="id" id="id" name="id">
+	</div>
+	<div>
+		<div>이름</div>
+		<input type="id" id="name" name="name">
+	</div>
+	<input type="button" onclick="fn_update()" value="수정">
+	<input type="button" onclick="fn_delete()" value="삭제">
+	<script>
+		const GW_URL = document.querySelector("#gwurl").getAttribute("data-contextPath");
+		
+		function fn_getlist() {
+			$.ajax({
+				type: "GET",
+				url: "http://" + GW_URL + "/api/list",
+				dataType: "text"
+			}).done(function (result) {
+				console.log(result);
+				var str = "";
+				str += "<table>";
+					
+				rtn = JSON.parse(result);
+				for(var i=0; i<rtn.length; i++) {
+					str += "<tr>";
+					str += "<td>" + rtn[i].id + "</td>";
+					str += "<td>" + rtn[i].name + "</td>";
+					str += "</tr>";
+				}
+				str += "</table>";
+				
+				$("#list").html(str);
+			}).fail(function (jqXHR) {
+				console.log(jqXHR);
+			})
+		}
+		
+		function fn_update() {
+			const id = $("#id").val();
+			const name = $("#name").val();
+			
+			if(id == "") {
+				alert("아이디를 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			if(name == "") {
+				alert("이름을 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			const path = "http://" + GW_URL + "/api/update";
+			const json = JSON.stringify({
+				"id" : id,
+				"name" : name
+			});
+			
+			$.ajax({
+				url: path,
+				type: "POST",
+				contentType: "application/json",
+				data: json
+			}).done(function (result) {
+				console.log(result);
+				$("#id").val("");
+				$("#name").val("");
+				fn_getlist();
+			}); 
+		}
+		
+		function fn_delete() {
+			const id = $("#id").val();
+			
+			if(id == "") {
+				alert("아이디를 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			const path = "http://" + GW_URL + "/api/delete";
+			const json = JSON.stringify({
+				"id" : id
+			});
+			
+			$.ajax({
+				url: path,
+				type: "POST",
+				contentType: "application/json",
+				data: json
+			}).done(function (result) {
+				console.log(result);
+				$("#id").val("");
+				fn_getlist();
+			}); 
+		}
+	</script>
+</body>
+</html>
