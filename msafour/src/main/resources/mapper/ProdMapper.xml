@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msafour.prod.mapper.ProdMapper">
+  <select id="selectByProdcd" resultType="com.msafour.prod.model.ProdVO">
+        SELECT * FROM prodinfo WHERE prodcd = #{prodcd} LIMIT 1
+    </select>
+    <select id="selectProdList" resultType="com.msafour.prod.model.ProdVO">
+        SELECT * FROM prodinfo
+    </select>
+    <insert id="insertProd">
+        INSERT INTO prodinfo(prodcd, prodnm) VALUES (#{prodcd}, #{prodnm})
+    </insert>
+    <update id="updateProd">
+        UPDATE prodinfo SET prodnm = #{prodnm} WHERE prodcd = #{prodcd}
+    </update>
+     <delete id="deleteProd">
+        DELETE FROM prodinfo WHERE prodcd = #{prodcd}
+    </delete>
+</mapper>

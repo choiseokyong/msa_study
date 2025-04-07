@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="리스트"></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link id="gwurl" th:data-contextPath="${@environment.getProperty('reactivegateway.url')}" />
+</head>
+<body>
+	<div>
+		<h1>상품 목록</h1>
+		<button onclick="fn_getlist()">상품 목록 호출하기</button>
+		<div id="list"></div>
+	</div>
+	<div>
+		<div>상품 아이디</div>
+		<input type="text" id="stockcd" name="stockcd">
+	</div>
+	<div>
+		<div>상품명</div>
+		<input type="text" id="stocknm" name="stocknm">
+	</div>
+	<input type="button" onclick="fn_update()" value="수정">
+	<input type="button" onclick="fn_delete()" value="삭제">
+	<script>
+		const GW_URL = document.querySelector("#gwurl").getAttribute("data-contextPath");
+		
+		function fn_getlist() {
+			$.ajax({
+				type: "GET",
+				url: "http://" + GW_URL + "/api/list",
+				dataType: "text"
+			}).done(function (result) {
+				console.log(result);
+				var str = "";
+				str += "<table>";
+					
+				rtn = JSON.parse(result);
+				for(var i=0; i<rtn.length; i++) {
+					str += "<tr>";
+					str += "<td>" + rtn[i].stockcd + "</td>";
+					str += "<td>" + rtn[i].stocknm + "</td>";
+					str += "</tr>";
+				}
+				str += "</table>";
+				
+				$("#list").html(str);
+			}).fail(function (jqXHR) {
+				console.log(jqXHR);
+			})
+		}
+		
+		function fn_update() {
+			const stockcd = $("#stockcd").val();
+			const stocknm = $("#stocknm").val();
+			
+			if(stockcd == "") {
+				alert("재고 아이디를 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			if(stocknm == "") {
+				alert("재고명을 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			const path = "http://" + GW_URL + "/api/update";
+			const json = JSON.stringify({
+				"stockcd" : stockcd,
+				"stocknm" : stocknm
+			});
+			
+			$.ajax({
+				url: path,
+				type: "POST",
+				contentType: "application/json",
+				data: json
+			}).done(function (result) {
+				console.log(result);
+				$("#stockcd").val("");
+				$("#stocknm").val("");
+				fn_getlist();
+			}); 
+		}
+		
+		function fn_delete() {
+			const stockcd = $("#stockcd").val();
+			
+			if(stockcd == "") {
+				alert("상품 아이디를 입력해주세요.");
+				e.preventDefault();
+			}
+			
+			const path = "http://" + GW_URL + "/api/delete";
+			const json = JSON.stringify({
+				"stockcd" : stockcd
+			});
+			
+			$.ajax({
+				url: path,
+				type: "POST",
+				contentType: "application/json",
+				data: json
+			}).done(function (result) {
+				console.log(result);
+				$("#stockcd").val("");
+				fn_getlist();
+			}); 
+		}
+	</script>
+</body>
+</html>

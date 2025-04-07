@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.msafive.prod.mapper.ProdMapper">
+  <select id="selectByProdcd" resultType="com.msafive.prod.model.ProdVO">
+        SELECT * FROM stock WHERE stockcd = #{stockcd} LIMIT 1
+    </select>
+    <select id="selectProdList" resultType="com.msafive.prod.model.ProdVO">
+        SELECT * FROM stock
+    </select>
+    <insert id="insertProd">
+        INSERT INTO stock(stockcd, stocknm) VALUES (#{stockcd}, #{stocknm})
+    </insert>
+    <update id="updateProd">
+        UPDATE stock SET stocknm = #{stocknm} WHERE stockcd = #{stockcd}
+    </update>
+     <delete id="deleteProd">
+        DELETE FROM stock WHERE stockcd = #{stockcd}
+    </delete>
+</mapper>

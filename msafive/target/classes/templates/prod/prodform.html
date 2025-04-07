@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="재고등록"></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link id="gwurl" th:data-contextPath="${@environment.getProperty('reactivegateway.url')}" />
+</head>
+<body>
+    <th:block layout:fragment="content">
+		<h2>재고 등록</h2>
+		<div>
+			<form>
+				<div>
+					<div>재고 아이디</div>
+					<input type="text" id="stockcd" name="stockcd">
+				</div>
+				<div>
+					<div>재고명</div>
+					<input type="text" id="stocknm" name="stocknm">
+				</div>
+				<input type="submit" class="btn-submit" value="재고등록">
+				<button type="button" onclick="fn_getform()">getForm</button>
+			</form>
+		</div>
+		
+		<div id="getform"></div>
+	</th:block>
+	
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			const GW_URL = document.querySelector("#gwurl").getAttribute("data-contextPath");
+			
+			$(function() {
+				$(".btn-submit").click((e) => {
+					const stockcd = $("#stockcd").val();
+					const stocknm = $("#stocknm").val();
+					
+					if(stockcd == "") {
+						alert("재고 아이디를 입력해주세요.");
+						e.preventDefault();
+					}
+					
+					if(stocknm == "") {
+						alert("재고명을 입력해주세요.");
+						e.preventDefault();
+					}
+					
+					const path = "http://" + GW_URL + "/api/signup";
+					const json = JSON.stringify({
+						"stockcd" : stockcd,
+						"stocknm" : stocknm
+					});
+					
+					$.ajax({
+						url: path,
+						type: "POST",
+						contentType: "application/json",
+						data: json
+					}).done(function (result) {
+						alert("재고 등록 성공");
+						console.log();
+						location.href = "http://" + GW_URL + "/userlist";
+					}); 
+				});
+			});
+			
+			function fn_getform() {
+				const stockcd = $("#stockcd").val();
+				
+				if(stockcd == "") {
+					alert("재고 아이디를 입력해주세요.");
+					e.preventDefault();
+				}
+				
+				const path = "http://" + GW_URL + "/api/getform";
+				const json = JSON.stringify({
+					"stockcd" : stockcd
+				});
+				
+				$.ajax({
+					url: path,
+					type: "POST",
+					contentType: "application/json",
+					data: json
+				}).done(function (result) {
+					console.log(result);
+					var str = "";
+					str += "<table>";
+					str += "<tr>";
+					str += "<td>" + result.stockcd + "</td>";
+					str += "<td>" + result.stocknm + "</td>";
+					str += "</tr>";
+					str += "</table>";
+					
+					$("#getform").html(str);
+				}); 
+			}
+		</script>
+	</th:block>
+</body>
+</html>
